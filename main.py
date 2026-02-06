@@ -23,16 +23,14 @@ def send_message(text):
         return False
 
 def send_poll():
-    poll_message = """ Run Poll
+    poll_message = """📊Daily Futsal Runs 
 
-Are you running today?
-
+Are you playing today?
 React with:
 👍 = yes
 👎 = no
 🤷 = #?
-
-Or reply: yes / no / #?"""
+"""
     
     send_message(poll_message)
     print(f"Poll sent at {datetime.now()}")
