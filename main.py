@@ -5,6 +5,7 @@ import time
 from threading import Thread
 from datetime import datetime
 import os
+import json
 
 app = Flask(__name__)
 
@@ -22,33 +23,44 @@ def create_poll():
     }
     
     poll_data = {
-        "subject": "🏃‍♂️ Are you running today?",
-        "options": [
-            {"title": "yes"},
-            {"title": "no"},
-            {"title": "#?"}
-        ],
-        "expiration": 86400,
-        "type": "single"
+        "poll": {
+            "subject": "Are you pulling up today?",
+            "options": [
+                {"title": "yes"},
+                {"title": "no"},
+                {"title": "#?"}
+            ],
+            "expiration": 86400,
+            "type": "single"
+        }
     }
+    
+    print(f"Creating poll at {datetime.now()}")
+    print(f"URL: {url}")
+    print(f"Data: {json.dumps(poll_data)}")
     
     try:
         response = requests.post(url, json=poll_data, headers=headers)
+        print(f"Response status: {response.status_code}")
+        print(f"Response body: {response.text}")
+        
         if response.status_code == 201:
             poll_response = response.json()
             poll_id = poll_response['poll']['id']
+            print(f"Poll ID: {poll_id}")
             send_message_with_poll(poll_id)
-            print(f"Poll created at {datetime.now()}")
         else:
-            print(f"Error creating poll: {response.status_code} - {response.text}")
+            print(f"Failed to create poll!")
     except Exception as e:
-        print(f"Error creating poll: {e}")
+        print(f"Exception creating poll: {str(e)}")
+        import traceback
+        traceback.print_exc()
 
 def send_message_with_poll(poll_id):
     url = "https://api.groupme.com/v3/bots/post"
     data = {
         "bot_id": BOT_ID,
-        "text": "🏃‍♂️ Daily Run Poll 🏃‍♀️\n\nAre you running today? Vote below!",
+        "text": " Runs Poll ",
         "attachments": [
             {
                 "type": "poll",
@@ -56,11 +68,15 @@ def send_message_with_poll(poll_id):
             }
         ]
     }
+    
+    print(f"Sending message with poll ID: {poll_id}")
+    
     try:
         response = requests.post(url, json=data)
-        print(f"Message sent: {response.status_code}")
+        print(f"Message response: {response.status_code}")
+        print(f"Message response body: {response.text}")
     except Exception as e:
-        print(f"Error sending message: {e}")
+        print(f"Exception sending message: {str(e)}")
 
 def schedule_polls():
     schedule.every().monday.at("19:30").do(create_poll)
@@ -89,7 +105,7 @@ def ping():
 @app.route('/test-poll', methods=['GET'])
 def test_poll():
     create_poll()
-    return "Test poll created!"
+    return "Test poll created - check logs!"
 
 if __name__ == '__main__':
     scheduler_thread = Thread(target=schedule_polls, daemon=True)
@@ -97,5 +113,3 @@ if __name__ == '__main__':
     
     port = int(os.environ.get('PORT', 10000))
     app.run(host='0.0.0.0', port=port)
-
-
