@@ -97,11 +97,5 @@ if __name__ == '__main__':
     
     port = int(os.environ.get('PORT', 10000))
     app.run(host='0.0.0.0', port=port)
-```
 
-## **After You Commit:**
 
-1. Wait for Render to redeploy (2-3 minutes)
-2. Once it's **"Live"**, test it immediately by visiting:
-```
-   https://footy-3mat.onrender.com/test-poll
