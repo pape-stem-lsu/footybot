@@ -8,9 +8,9 @@ import os
 
 app = Flask(__name__)
 
-BOT_ID = "your_bot_id_here"  # Replace with your actual Bot ID
-GROUP_ID = "your_group_id_here"  # We'll need to get this
-ACCESS_TOKEN = "your_access_token_here"  # We'll need to get this too
+BOT_ID = "4b86ded6c239105623a8a243c6"
+GROUP_ID = "103943618"
+ACCESS_TOKEN = "dzIrDPvokcfyTAeoj5YA0j5xBR7wY66ySboWso1t"
 
 os.environ['TZ'] = 'America/Chicago'
 
@@ -28,27 +28,27 @@ def create_poll():
             {"title": "no"},
             {"title": "#?"}
         ],
-        "expiration": 86400,  # 24 hours
+        "expiration": 86400,
         "type": "single"
     }
     
     try:
         response = requests.post(url, json=poll_data, headers=headers)
         if response.status_code == 201:
-            poll = response.json()
-            # Send message with poll
-            send_message_with_poll(poll['poll']['id'])
+            poll_response = response.json()
+            poll_id = poll_response['poll']['id']
+            send_message_with_poll(poll_id)
             print(f"Poll created at {datetime.now()}")
         else:
-            print(f"Error creating poll: {response.status_code}")
+            print(f"Error creating poll: {response.status_code} - {response.text}")
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"Error creating poll: {e}")
 
 def send_message_with_poll(poll_id):
     url = "https://api.groupme.com/v3/bots/post"
     data = {
         "bot_id": BOT_ID,
-        "text": "🏃‍♂️ Daily Run Poll 🏃‍♀️",
+        "text": "🏃‍♂️ Daily Run Poll 🏃‍♀️\n\nAre you running today? Vote below!",
         "attachments": [
             {
                 "type": "poll",
@@ -56,7 +56,11 @@ def send_message_with_poll(poll_id):
             }
         ]
     }
-    requests.post(url, json=data)
+    try:
+        response = requests.post(url, json=data)
+        print(f"Message sent: {response.status_code}")
+    except Exception as e:
+        print(f"Error sending message: {e}")
 
 def schedule_polls():
     schedule.every().monday.at("19:30").do(create_poll)
@@ -82,9 +86,22 @@ def webhook():
 def ping():
     return "Bot is alive!", 200
 
+@app.route('/test-poll', methods=['GET'])
+def test_poll():
+    create_poll()
+    return "Test poll created!"
+
 if __name__ == '__main__':
     scheduler_thread = Thread(target=schedule_polls, daemon=True)
     scheduler_thread.start()
     
     port = int(os.environ.get('PORT', 10000))
     app.run(host='0.0.0.0', port=port)
+```
+
+## **After You Commit:**
+
+1. Wait for Render to redeploy (2-3 minutes)
+2. Once it's **"Live"**, test it immediately by visiting:
+```
+   https://footy-3mat.onrender.com/test-poll
