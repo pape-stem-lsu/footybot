@@ -114,7 +114,6 @@ def webhook():
 @app.route('/ping', methods=['GET'])
 def ping():
     return "Bot is alive!", 200
-
 if __name__ == '__main__':
     # Start scheduler in background thread
     scheduler_thread = Thread(target=schedule_polls, daemon=True)
@@ -123,11 +122,5 @@ if __name__ == '__main__':
     # Run Flask app
     port = int(os.environ.get('PORT', 10000))
     app.run(host='0.0.0.0', port=port)
-```
 
-**File 2: `requirements.txt`**
-```
-flask==3.0.0
-requests==2.31.0
-schedule==1.2.0
-gunicorn==21.2.0
+
