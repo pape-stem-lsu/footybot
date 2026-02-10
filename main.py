@@ -36,13 +36,13 @@ React with:
     print(f"Poll sent at {datetime.now()}")
 
 def schedule_polls():
-    schedule.every().monday.at("12:30").do(send_poll)
-    schedule.every().tuesday.at("12:30").do(send_poll)
-    schedule.every().wednesday.at("12:30").do(send_poll)
-    schedule.every().thursday.at("12:30").do(send_poll)
-    schedule.every().friday.at("12:30").do(send_poll)
-    schedule.every().saturday.at("12:30").do(send_poll)
-    schedule.every().sunday.at("12:30").do(send_poll)
+    schedule.every().monday.at("11:30").do(send_poll)
+    schedule.every().tuesday.at("11:30").do(send_poll)
+    schedule.every().wednesday.at("11:30").do(send_poll)
+    schedule.every().thursday.at("11:30").do(send_poll)
+    schedule.every().friday.at("11:30").do(send_poll)
+    schedule.every().saturday.at("11:30").do(send_poll)
+    schedule.every().sunday.at("11:30").do(send_poll)
     
     print("Scheduler started!")
     print(f"Current time: {datetime.now()}")
