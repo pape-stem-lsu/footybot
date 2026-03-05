@@ -1,7 +1,8 @@
 from flask import Flask, request
 import requests
-import schedule
-import time
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.cron import CronTrigger
+import pytz
 from threading import Thread
 from datetime import datetime, timedelta
 import os
@@ -55,17 +56,19 @@ def create_and_send_poll():
         traceback.print_exc()
         return False
 
-def schedule_polls():
-    # Send poll every day at 12:00 PM (noon)
-    schedule.every().day.at("12:00").do(create_and_send_poll)
+def start_scheduler():
+    central = pytz.timezone("America/Chicago")
+    scheduler = BackgroundScheduler(timezone=central)
+    scheduler.add_job(
+        create_and_send_poll,
+        trigger=CronTrigger(hour=12, minute=0, timezone=central)
+    )
+    scheduler.start()
 
     print("Scheduler started!")
-    print(f"Current time: {datetime.now()}")
+    print(f"Current time (Central): {datetime.now(central)}")
     print("Poll will be sent daily at 12:00 PM Central Time")
 
-    while True:
-        schedule.run_pending()
-        time.sleep(60)
 
 @app.route('/', methods=['POST'])
 def webhook():
@@ -84,8 +87,7 @@ def test_poll():
         return "Failed to create poll - check logs"
 
 if __name__ == '__main__':
-    scheduler_thread = Thread(target=schedule_polls, daemon=True)
-    scheduler_thread.start()
+    start_scheduler()
 
     port = int(os.environ.get('PORT', 10000))
     app.run(host='0.0.0.0', port=port)
