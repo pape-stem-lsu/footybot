@@ -19,13 +19,13 @@ def create_and_send_poll():
     poll_url = f"https://api.groupme.com/v3/poll/{GROUP_ID}?token={ACCESS_TOKEN}"
 
     # Expire 24 hours from now (poll auto-sends when created, no separate message needed)
-    expiration = int((datetime.now() + timedelta(hours=24)).timestamp())
+    expiration = int((datetime.now() + timedelta(hours=20)).timestamp())
 
     poll_payload = {
-        "subject": "Futsal runs?",
+        "subject": "Post spreak runs?🏝️⚽️",
         "options": [
-            {"title": "yes"},
-            {"title": "no"},
+            {"title": "yuh💐✅"},
+            {"title": "nah🥀"},
             {"title": "#?"}
         ],
         "expiration": expiration,
