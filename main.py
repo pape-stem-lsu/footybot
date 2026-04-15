@@ -22,11 +22,11 @@ def create_and_send_poll():
     expiration = int((datetime.now() + timedelta(hours=20)).timestamp())
 
     poll_payload = {
-        "subject": "7:30 Futsal Runs?⚽️",
+        "subject": "7:30 Futsal Runs⚽️",
         "options": [
-            {"title": "yuh✅"},
-            {"title": "nah🥀"},
-            {"title": "#?"}
+            {"title": "YES✅🏝️🤩"},
+            {"title": "nah🥀(i am a lazy chud)"},
+            {"title": "#?(You better come)"}
         ],
         "expiration": expiration,
         "type": "single",
