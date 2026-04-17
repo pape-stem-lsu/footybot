@@ -24,9 +24,9 @@ def create_and_send_poll():
     poll_payload = {
         "subject": "7:30 Futsal Runs⚽️",
         "options": [
-            {"title": "YES✅🏝️🤩"},
-            {"title": "nah🥀(i am a lazy chud)"},
-            {"title": "#?(You better come)"}
+            {"title": "YES"},
+            {"title": "NO"},
+            {"title": "#?"}
         ],
         "expiration": expiration,
         "type": "single",
