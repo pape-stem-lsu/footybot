@@ -61,7 +61,7 @@ def start_scheduler():
     scheduler = BackgroundScheduler(timezone=central)
     scheduler.add_job(
         create_and_send_poll,
-        trigger=CronTrigger(hour=12, minute=0, timezone=central)
+        trigger=CronTrigger(hour=12, minute=25, timezone=central)
     )
     scheduler.start()
 
