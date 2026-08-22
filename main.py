@@ -33,7 +33,7 @@ def create_and_send_poll():
         "visibility": "public"
     }
 
-    print(f"Creating poll at {datetime.now()}")
+    print(f"Creating poll at {datetime.now()}", flush=True)
 
     try:
         poll_response = requests.post(poll_url, json=poll_payload)
