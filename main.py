@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 BOT_ID = "4b86ded6c239105623a8a243c6"
 GROUP_ID = "103943618"
-ACCESS_TOKEN = "dzIrDPvokcfyTAeoj5YA0j5xBR7wY66ySboWso1t"
+ACCESS_TOKEN = "4a0b0c007f3a013fe15312174e1ddd45"
 
 os.environ['TZ'] = 'America/Chicago'
 
